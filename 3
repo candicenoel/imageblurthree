@@ -1,0 +1,46 @@
+class Image
+
+  def initialize(image)
+    @image = image
+  end
+
+  def output_image
+    @image.each do |row|
+      puts row.join
+    end
+  end
+
+  def blur!(distance=1)
+    distance.times do
+      blur_coords!
+    end
+  end
+
+    def blur_coords!
+      blur_coords = []
+      @image.each_with_index do |row, index_row|
+        row.each_with_index do |col, index_col|
+          blur_coords << [col, index_col] if col == 1
+        end
+      end
+
+      blur_coords.each do |coords|
+        @image[coords[0]][coords[1] + 1] = 1 if coords[1] + 1 <= @image[coords[0]].length - 1
+        @image[coords[0]][coords[1] - 1] = 1 if coords[1] - 1 >= 0
+        @image[coords[0] + 1][coords[1]] = 1 if coords[0] + 1 <= @image.length - 1
+        @image[coords[0] - 1][coords[1]] = 1 if coords[0] - 1 >= 0
+      end
+    end
+
+end
+
+image = Image.new([
+  [0, 0, 0, 0],
+  [0, 0, 0, 0],
+  [0, 1, 0, 0],
+  [0, 0, 0, 0]
+])
+
+
+image.blur!(INSERT MANHATTAN NUMBER HERE)
+image.output_image
